@@ -8,7 +8,7 @@ dotenv.config()
 
 // Constants
 const PORT = process.env.PORT || 3001
-const ALLOWED_ORIGINS = ['http://localhost:5173', 'http://localhost:3000']
+const ALLOWED_ORIGINS = ['http://localhost:5173', 'http://localhost:3000', 'https://upload-image.fannapp.my.id']
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -96,7 +96,7 @@ const processFileUpload = async (file, directory) => {
   }
 }
 
-// Routes
+// Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'ok', 
@@ -105,6 +105,7 @@ app.get('/api/health', (req, res) => {
   })
 })
 
+// Upload endpoint
 app.post('/api/upload', upload.array('files'), async (req, res) => {
   try {
     const { directory } = req.body
@@ -116,19 +117,39 @@ app.post('/api/upload', upload.array('files'), async (req, res) => {
       })
     }
 
-    if (!req.files?.length) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
         message: 'No files uploaded'
       })
     }
 
-    const results = await Promise.all(
-      req.files.map(file => processFileUpload(file, directory))
-    )
+    const uploadPromises = req.files.map(async (file) => {
+      const originalName = file.originalname
+      const newFileName = generateRandomFilename(originalName)
+
+      try {
+        const result = await uploadToS3(file, directory, newFileName)
+        return {
+          ...result,
+          originalName,
+          newName: newFileName,
+        }
+      } catch (error) {
+        console.error(`Error uploading ${originalName}:`, error)
+        return {
+          success: false,
+          originalName,
+          newName: newFileName,
+          error: error.message,
+        }
+      }
+    })
+
+    const results = await Promise.all(uploadPromises)
 
     const successCount = results.filter(r => r.success).length
-    const failCount = results.length - successCount
+    const failCount = results.filter(r => !r.success).length
 
     res.json({
       success: successCount > 0,
