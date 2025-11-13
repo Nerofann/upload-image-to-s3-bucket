@@ -8,7 +8,6 @@ dotenv.config()
 
 // Constants
 const PORT = process.env.PORT || 3001
-const ALLOWED_ORIGINS = ['http://localhost:5173', 'http://localhost:3000', 'https://upload-image.fannapp.my.id']
 const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -36,7 +35,7 @@ const upload = multer({
 
 // Express App Setup
 const app = express()
-app.use(cors({ origin: ALLOWED_ORIGINS, credentials: true }))
+app.use(cors({ origin: "*" }))
 app.use(express.json())
 
 // Utility: Generate random filename
