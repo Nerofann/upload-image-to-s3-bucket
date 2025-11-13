@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   apps: [{
     name: 'upload-image-backend',
     script: './backend/server.js',
