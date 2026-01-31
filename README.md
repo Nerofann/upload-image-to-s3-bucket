@@ -40,6 +40,15 @@ cp .env.example .env
 VITE_BACKEND_URL=http://localhost:3001
 ```
 
+4. Configure AWS credentials for backend in `.env`:
+```env
+PORT=3001
+AWS_REGION=ap-southeast-1
+AWS_ACCESS_KEY_ID=your-access-key-id
+AWS_SECRET_ACCESS_KEY=your-secret-access-key
+AWS_BUCKET_NAME=your-bucket-name
+```
+
 ### Backend Setup
 
 1. Navigate to backend directory:
@@ -50,20 +59,6 @@ cd backend
 2. Install dependencies:
 ```bash
 npm install
-```
-
-3. Create `.env` file:
-```bash
-cp .env.example .env
-```
-
-4. Configure AWS credentials in `backend/.env`:
-```env
-PORT=3001
-AWS_REGION=ap-southeast-1
-AWS_ACCESS_KEY_ID=your-access-key-id
-AWS_SECRET_ACCESS_KEY=your-secret-access-key
-AWS_BUCKET_NAME=your-bucket-name
 ```
 
 ## 🔑 AWS S3 Setup
