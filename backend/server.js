@@ -8,7 +8,7 @@ dotenv.config()
 
 // Constants
 const PORT = process.env.PORT || 3001
-const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf']
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
 // AWS S3 Client

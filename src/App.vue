@@ -14,7 +14,7 @@ const uploadProgress = ref({ current: 0, total: 0 })
 const errors = ref({ directory: '', files: '' })
 
 // Constants
-const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf']
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const MIN_DIRECTORY_LENGTH = 3
 const MAX_DIRECTORY_LENGTH = 50
@@ -244,7 +244,7 @@ const isFormValid = computed(() =>
               type="file"
               @change="handleFileChange"
               multiple
-              accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
+              accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,application/pdf"
               class="file-input"
             />
             <label for="files" class="file-label">
