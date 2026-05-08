@@ -14,7 +14,16 @@ const uploadProgress = ref({ current: 0, total: 0 })
 const errors = ref({ directory: '', files: '' })
 
 // Constants
-const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf']
+const ALLOWED_FILE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'application/pdf',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+]
 const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 const MIN_DIRECTORY_LENGTH = 3
 const MAX_DIRECTORY_LENGTH = 50
@@ -62,13 +71,13 @@ const validateFiles = () => {
   errors.value.files = ''
   
   if (selectedFiles.value.length === 0) {
-    errors.value.files = 'Pilih minimal 1 file gambar'
+    errors.value.files = 'Pilih minimal 1 file'
     return false
   }
   
   for (const file of selectedFiles.value) {
     if (!ALLOWED_FILE_TYPES.includes(file.type)) {
-      errors.value.files = `File ${file.name} bukan format gambar yang valid (JPG, PNG, GIF, WEBP)`
+      errors.value.files = `File ${file.name} bukan format yang valid (JPG, PNG, GIF, WEBP, PDF, XLS, XLSX)`
       return false
     }
     
@@ -236,7 +245,7 @@ const isFormValid = computed(() =>
         <div class="form-group">
           <label for="files">
             <span class="label-icon">🖼️</span>
-            Pilih Gambar
+            Pilih File
           </label>
           <div class="file-input-wrapper">
             <input
@@ -244,7 +253,7 @@ const isFormValid = computed(() =>
               type="file"
               @change="handleFileChange"
               multiple
-              accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,application/pdf"
+              accept="image/jpeg,image/jpg,image/png,image/gif,image/webp,application/pdf,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,.xls,.xlsx"
               class="file-input"
             />
             <label for="files" class="file-label">
@@ -259,7 +268,7 @@ const isFormValid = computed(() =>
           <span v-if="errors.files" class="error-message">
             {{ errors.files }}
           </span>
-          <p class="file-info">Format: JPG, PNG, GIF, WEBP (Max 5MB per file)</p>
+          <p class="file-info">Format: JPG, PNG, GIF, WEBP, PDF, XLS, XLSX (Max 5MB per file)</p>
         </div>
 
         <!-- Preview Images -->
