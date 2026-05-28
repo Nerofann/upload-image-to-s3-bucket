@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { uploadViaBackend } from './services/backendService.js'
 
 // State Management
-const directoryName = ref('')
+const directoryName = ref((import.meta.env.VITE_FOLDER_PATH) || '')
 const selectedFiles = ref([])
 const previews = ref([])
 const uploadedFiles = ref([])
@@ -12,6 +12,7 @@ const isUploading = ref(false)
 const copiedIndex = ref(null)
 const uploadProgress = ref({ current: 0, total: 0 })
 const errors = ref({ directory: '', files: '' })
+const lockFolderPath = import.meta.env.VITE_FOLDER_PATH || ''
 
 // Constants
 const ALLOWED_FILE_TYPES = [
@@ -234,6 +235,7 @@ const isFormValid = computed(() =>
             @input="validateDirectory"
             type="text"
             placeholder="Contoh: project-photos"
+            :readonly="!!lockFolderPath"
             :class="{ 'error': errors.directory }"
           />
           <span v-if="errors.directory" class="error-message">
